@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GLAMBOT | AI Beauty Assistant</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <a class="brand" href="#scanner" aria-label="GLAMBOT home">
+          <span class="brand-mark">G</span>
+          <span>GLAMBOT</span>
+        </a>
+        <nav class="nav" aria-label="Primary navigation">
+          <a href="#scanner">Face Scan</a>
+          <a href="#analysis">Skin Report</a>
+          <a href="#recommendations">Products</a>
+          <a href="#routine">Routine</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero" id="scanner">
+          <div class="hero-copy">
+            <p class="eyebrow">AI-powered affordable beauty advisor</p>
+            <h1>Beauty That Fits Your Skin and Your Budget</h1>
+            <p class="hero-text">
+              Scan or upload a face image to receive a skin concern report,
+              budget-friendly product picks, home remedies, and daily routines.
+            </p>
+            <div class="hero-actions">
+              <button class="primary-btn" id="startCameraBtn" type="button">
+                <span aria-hidden="true">◉</span>
+                Start Analysis
+              </button>
+              <a class="secondary-btn" href="#recommendations">
+                <span aria-hidden="true">□</span>
+                Explore Products
+              </a>
+            </div>
+            <div class="quick-stats" aria-label="GLAMBOT highlights">
+              <div>
+                <strong>5+</strong>
+                <span>Skin checks</span>
+              </div>
+              <div>
+                <strong>Rs. 299+</strong>
+                <span>Budget picks</span>
+              </div>
+              <div>
+                <strong>4.4+</strong>
+                <span>Rated products</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="scanner-panel" aria-label="Face scanner demo">
+            <div class="scanner-frame">
+              <video id="cameraFeed" playsinline muted></video>
+              <img id="previewImage" alt="Uploaded face preview" />
+              <div class="face-guide" aria-hidden="true">
+                <span></span>
+              </div>
+              <div class="scan-line" aria-hidden="true"></div>
+              <p class="scanner-status" id="scannerStatus">Upload an image or open camera</p>
+            </div>
+            <div class="scanner-controls">
+              <label class="file-btn" for="imageUpload">
+                <span aria-hidden="true">↑</span>
+                Upload Image
+              </label>
+              <input id="imageUpload" type="file" accept="image/*" />
+              <button class="ghost-btn" id="captureBtn" type="button">
+                <span aria-hidden="true">◎</span>
+                Capture
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="section two-column" id="analysis">
+          <div>
+            <p class="eyebrow">Skin report dashboard</p>
+            <h2>Personalized analysis summary</h2>
+            <p class="section-copy">
+              GLAMBOT estimates visible skin tone, concern levels, and skin type,
+              then maps each issue to affordable skincare actions.
+            </p>
+          </div>
+          <div class="report-grid" id="reportGrid" aria-live="polite"></div>
+        </section>
+
+        <section class="section" id="recommendations">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Smart product recommendation</p>
+              <h2>Trusted picks with affordable swaps</h2>
+            </div>
+            <div class="filter-tabs" role="tablist" aria-label="Recommendation filters">
+              <button class="tab active" type="button" data-filter="all">All</button>
+              <button class="tab" type="button" data-filter="skincare">Skincare</button>
+              <button class="tab" type="button" data-filter="makeup">Makeup</button>
+            </div>
+          </div>
+          <div class="product-grid" id="productGrid"></div>
+        </section>
+
+        <section class="section routine-section" id="routine">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Healthy skin habits</p>
+              <h2>Morning, night, and home remedy routine</h2>
+            </div>
+          </div>
+          <div class="routine-grid">
+            <article class="routine-card">
+              <h3>Morning Routine</h3>
+              <ol id="morningRoutine"></ol>
+            </article>
+            <article class="routine-card">
+              <h3>Night Routine</h3>
+              <ol id="nightRoutine"></ol>
+            </article>
+            <article class="routine-card remedy-card">
+              <h3>Home Remedies</h3>
+              <ul id="remedyList"></ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="section architecture-section">
+          <p class="eyebrow">System architecture</p>
+          <h2>Project flow</h2>
+          <div class="flow" aria-label="System architecture flow">
+            <span>User</span>
+            <span>React Frontend</span>
+            <span>Flask API</span>
+            <span>Face Analysis</span>
+            <span>Recommendation Engine</span>
+            <span>MongoDB</span>
+            <span>Results Dashboard</span>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
