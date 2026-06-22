@@ -1,89 +1,31 @@
-const analysis = [
-  { label: "Skin Tone", value: "Medium Warm", score: 82 },
-  { label: "Acne Level", value: "Mild", score: 36 },
-  { label: "Pigmentation", value: "Moderate", score: 58 },
-  { label: "Dark Circles", value: "Light", score: 31 },
-  { label: "Skin Type", value: "Oily Combination", score: 74 },
-  { label: "Tanning", value: "Low", score: 28 }
+﻿const API_BASE_URL = (window.GLAMBOT_API_URL || "http://127.0.0.1:5000").replace(/\/$/, "");
+const API_URL = `${API_BASE_URL}/api/analyze`;
+
+let analysis = [
+  { label: "Skin Tone", value: "Upload image", score: 0 },
+  { label: "Acne Type", value: "Waiting", score: 0 },
+  { label: "Acne Level", value: "Waiting", score: 0 },
+  { label: "Skin Type", value: "Waiting", score: 0 },
+  { label: "Pigmentation", value: "Waiting", score: 0 },
+  { label: "Dark Circles", value: "Waiting", score: 0 },
+  { label: "Tanning", value: "Waiting", score: 0 }
 ];
 
-const products = [
+let products = [
   {
     name: "Minimalist 2% Salicylic Acid Face Wash",
     issue: "Acne",
-    price: 299,
-    rating: 4.5,
+    price: "Budget friendly",
+    rating: "Trusted",
     type: "skincare",
-    benefit: "Helps unclog pores, control excess oil, and reduce acne breakouts without a premium price.",
-    swap: "Premium match: Paula's Choice BHA Cleanser"
-  },
-  {
-    name: "Minimalist 10% Vitamin C Serum",
-    issue: "Pigmentation",
-    price: 499,
-    rating: 4.4,
-    type: "skincare",
-    benefit: "Brightens uneven tone and supports daily antioxidant care for dull or pigmented skin.",
-    swap: "Affordable alternative to The Ordinary Vitamin C"
-  },
-  {
-    name: "Deconstruct Alpha Arbutin Serum",
-    issue: "Dark Spots",
-    price: 549,
-    rating: 4.5,
-    type: "skincare",
-    benefit: "Targets dark spots and post-acne marks with a lightweight serum texture.",
-    swap: "Budget swap for premium spot-correcting serums"
-  },
-  {
-    name: "Re'equil Oil Free Moisturizer",
-    issue: "Oily Skin",
-    price: 395,
-    rating: 4.6,
-    type: "skincare",
-    benefit: "Hydrates oily or combination skin without a heavy, greasy finish.",
-    swap: "Affordable alternative to CeraVe PM Lotion"
-  },
-  {
-    name: "Aqualogica Glow+ Dewy Sunscreen SPF 50",
-    issue: "Tanning",
-    price: 399,
-    rating: 4.4,
-    type: "skincare",
-    benefit: "Protects against tanning and pigmentation triggers while keeping skin fresh.",
-    swap: "Budget-friendly daily SPF option"
-  },
-  {
-    name: "Maybelline Fit Me Matte Foundation",
-    issue: "Makeup Match",
-    price: 549,
-    rating: 4.5,
-    type: "makeup",
-    benefit: "Offers accessible shade options and a natural matte finish for everyday wear.",
-    swap: "Affordable alternative to Clinique foundation"
+    benefit: "Upload a face image to get CNN-powered acne recommendations from GLAMBOT.",
+    swap: "Backend recommendations will appear here."
   }
 ];
 
-const morningRoutine = [
-  "Gentle salicylic acid face wash",
-  "Vitamin C serum for pigmentation support",
-  "Oil-free moisturizer",
-  "Broad-spectrum SPF 50 sunscreen"
-];
-
-const nightRoutine = [
-  "Cleanse makeup and sunscreen thoroughly",
-  "Alpha arbutin or niacinamide treatment serum",
-  "Lightweight moisturizer",
-  "Caffeine eye cream for dark circles"
-];
-
-const remedies = [
-  "Aloe vera gel for calming acne-prone areas",
-  "Honey face mask once a week for soft hydration",
-  "Turmeric and yogurt pack for dullness",
-  "Cucumber gel or rose water for tanning comfort"
-];
+let morningRoutine = ["Upload an image to generate a personalized morning routine"];
+let nightRoutine = ["Upload an image to generate a personalized night routine"];
+let remedies = ["Upload an image to generate safe home remedy suggestions"];
 
 const reportGrid = document.querySelector("#reportGrid");
 const productGrid = document.querySelector("#productGrid");
@@ -100,6 +42,7 @@ const scannerStatus = document.querySelector("#scannerStatus");
 const scannerFrame = document.querySelector(".scanner-frame");
 
 let cameraStream = null;
+let activeFilter = "all";
 
 function renderAnalysis() {
   reportGrid.innerHTML = analysis
@@ -109,7 +52,7 @@ function renderAnalysis() {
           <span class="label">${item.label}</span>
           <div class="value">${item.value}</div>
           <div class="meter" aria-label="${item.label} score ${item.score} percent">
-            <span style="width: ${item.score}%"></span>
+            <span style="width: ${Math.max(0, Math.min(100, item.score))}%"></span>
           </div>
         </article>
       `
@@ -117,7 +60,8 @@ function renderAnalysis() {
     .join("");
 }
 
-function renderProducts(filter = "all") {
+function renderProducts(filter = activeFilter) {
+  activeFilter = filter;
   const visible = filter === "all" ? products : products.filter((product) => product.type === filter);
 
   productGrid.innerHTML = visible
@@ -126,11 +70,11 @@ function renderProducts(filter = "all") {
         <article class="product-card">
           <div class="product-top">
             <span class="issue-chip">${product.issue}</span>
-            <span class="rating-chip">${product.rating} rating</span>
+            <span class="rating-chip">${product.rating}</span>
           </div>
           <h3>${product.name}</h3>
           <p>${product.benefit}</p>
-          <div class="price">Rs. ${product.price}</div>
+          <div class="price">${product.price}</div>
           <div class="swap">${product.swap}</div>
         </article>
       `
@@ -142,11 +86,62 @@ function renderList(target, items) {
   target.innerHTML = items.map((item) => `<li>${item}</li>`).join("");
 }
 
+function renderAll() {
+  renderAnalysis();
+  renderProducts(activeFilter);
+  renderList(morningList, morningRoutine);
+  renderList(nightList, nightRoutine);
+  renderList(remedyList, remedies);
+}
+
 function setScannerState(message, mode) {
   scannerStatus.textContent = message;
   scannerFrame.classList.toggle("has-media", Boolean(mode));
   previewImage.classList.toggle("active", mode === "image");
   cameraFeed.classList.toggle("active", mode === "camera");
+}
+
+async function analyzeImage(blob) {
+  const formData = new FormData();
+  formData.append("image", blob, "glambot-face.jpg");
+  setScannerState("Analyzing image with GLAMBOT CNN backend...", previewImage.classList.contains("active") ? "image" : "camera");
+
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      body: formData
+    });
+    const payload = await response.json();
+
+    if (!response.ok) {
+      throw new Error(payload.error || "Analysis failed");
+    }
+
+    analysis = payload.analysis;
+    products = payload.products;
+    morningRoutine = payload.routine.morning;
+    nightRoutine = payload.routine.night;
+    remedies = payload.routine.remedies;
+    renderAll();
+
+    const confidence = Math.round((payload.acne.confidence || 0) * 100);
+    setScannerState(`Detected ${payload.acne.type} acne pattern with ${confidence}% confidence.`, previewImage.classList.contains("active") ? "image" : "camera");
+    document.querySelector("#analysis").scrollIntoView({ behavior: "smooth" });
+  } catch (error) {
+    setScannerState(`Backend not ready: ${error.message}. Start Flask and try again.`, previewImage.classList.contains("active") ? "image" : "camera");
+  }
+}
+
+function captureFrameAsBlob() {
+  const canvas = document.createElement("canvas");
+  canvas.width = cameraFeed.videoWidth || 640;
+  canvas.height = cameraFeed.videoHeight || 480;
+  const context = canvas.getContext("2d");
+  context.drawImage(cameraFeed, 0, 0, canvas.width, canvas.height);
+
+  return new Promise((resolve) => {
+    canvas.toBlob((blob) => resolve(blob), "image/jpeg", 0.92);
+  });
 }
 
 tabs.forEach((tab) => {
@@ -157,13 +152,13 @@ tabs.forEach((tab) => {
   });
 });
 
-imageUpload.addEventListener("change", (event) => {
+imageUpload.addEventListener("change", async (event) => {
   const [file] = event.target.files;
   if (!file) return;
 
   previewImage.src = URL.createObjectURL(file);
-  setScannerState("Image ready. Simulated analysis complete.", "image");
-  document.querySelector("#analysis").scrollIntoView({ behavior: "smooth" });
+  setScannerState("Image ready. Sending to CNN backend...", "image");
+  await analyzeImage(file);
 });
 
 startCameraBtn.addEventListener("click", async () => {
@@ -182,18 +177,19 @@ startCameraBtn.addEventListener("click", async () => {
   }
 });
 
-captureBtn.addEventListener("click", () => {
+captureBtn.addEventListener("click", async () => {
   if (!cameraStream) {
     setScannerState("Open camera first or upload an image.", "");
     return;
   }
 
-  setScannerState("Face captured. Simulated analysis complete.", "camera");
-  document.querySelector("#analysis").scrollIntoView({ behavior: "smooth" });
+  const blob = await captureFrameAsBlob();
+  if (!blob) {
+    setScannerState("Could not capture camera frame. Try again.", "camera");
+    return;
+  }
+  await analyzeImage(blob);
 });
 
-renderAnalysis();
-renderProducts();
-renderList(morningList, morningRoutine);
-renderList(nightList, nightRoutine);
-renderList(remedyList, remedies);
+renderAll();
+

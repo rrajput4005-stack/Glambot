@@ -1,23 +1,74 @@
-# GLAMBOT
+﻿# GLAMBOT
 
-GLAMBOT is an AI-powered beauty recommendation prototype for students and everyday users. It presents a face scanner flow, skin concern dashboard, affordable skincare and makeup recommendations, natural remedies, and personalized morning/night routines.
+GLAMBOT is an AI-powered beauty recommendation prototype for students and everyday users. It now includes a Flask backend that uses saved CNN models for acne and skin-tone prediction, then recommends affordable skincare products from the product CSV.
 
-## Run
+## Current AI Features
 
-Open `index.html` in a browser. The prototype is dependency-free and uses in-browser simulated analysis so it can be demonstrated without installing React, Flask, OpenCV, or MongoDB.
+- Acne CNN model: `backend/models/acne_cnn_model.keras`
+- Acne classes: Blackheads, Cyst, Papules, Pustules, Whiteheads
+- Skin-tone CNN model: `backend/models/skin_tone_cnn_model.keras`
+- Skin-tone classes: Black, Brown, White
+- Product suggestions: `backend/data/products.csv` with 95 products
+- Routine/remedy generation: rule-based from predicted acne level and inferred skin type
 
-## Included Features
+## Model Accuracy From Current Training
 
-- Face scan page with camera and upload controls
-- Skin tone, acne, pigmentation, dark circle, skin type, and tanning report
-- Product recommendation cards with prices, benefits, ratings, and affordable swaps
-- Morning routine, night routine, and home remedies
-- Architecture section matching the planned React, Flask, AI, and MongoDB flow
+- Acne CNN test accuracy: about 60.89%
+- Skin-tone CNN test accuracy: about 78.38%
 
-## Backend Extension Plan
+These are suitable for a college prototype/demo. For medical or production use, the models would need larger, more balanced, clinically reviewed datasets.
 
-The UI can later be connected to a Flask API:
+## Run Backend
 
-- `POST /api/analyze-face` for OpenCV, MediaPipe, and TensorFlow analysis
-- `GET /api/products?issue=Acne&budget=500` for MongoDB product recommendations
-- `GET /api/routine?skinType=Oily&concerns=Pigmentation,Acne` for personalized routines
+Open PowerShell:
+
+```powershell
+cd "C:\Users\LENOVO\OneDrive\Desktop\Glambot"
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\.venv\Scripts\activate
+python backend\app.py
+```
+
+The backend runs at:
+
+```text
+http://127.0.0.1:5000
+```
+
+Health check:
+
+```text
+http://127.0.0.1:5000/api/health
+```
+
+## Run Frontend
+
+Open a second PowerShell window:
+
+```powershell
+cd "C:\Users\LENOVO\OneDrive\Desktop\Glambot"
+python -m http.server 8000
+```
+
+Then open:
+
+```text
+http://localhost:8000
+```
+
+Upload a face image. The frontend sends it to Flask, Flask runs the CNN models, and GLAMBOT updates the dashboard, routines, remedies, and product cards.
+
+## Train Skin-Tone CNN Again
+
+Only needed if you change the skin-tone dataset:
+
+```powershell
+cd "C:\Users\LENOVO\OneDrive\Desktop\Glambot"
+.\.venv\Scripts\activate
+python backend\train_skin_tone_model.py
+```
+
+## Backend API
+
+- `GET /api/health`
+- `POST /api/analyze` with multipart form field `image`

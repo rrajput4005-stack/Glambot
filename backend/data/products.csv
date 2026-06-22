@@ -1,0 +1,96 @@
+product_id,product_name,brand,target_condition,skin_type
+GB001,Minimalist 2% Salicylic Acid Serum,Minimalist,Acne,Oily
+GB002,Minimalist 10% Niacinamide Serum,Minimalist,Acne Marks,Oily
+GB003,Minimalist Alpha Arbutin 2% Serum,Minimalist,Pigmentation,All
+GB004,Minimalist Vitamin C 10% Serum,Minimalist,Dark Spots,All
+GB005,Minimalist Tranexamic Acid Serum,Minimalist,Pigmentation,All
+GB006,The Derma Co 2% Salicylic Acid Serum,The Derma Co,Acne,Oily
+GB007,The Derma Co 5% Niacinamide Serum,The Derma Co,Acne Marks,Oily
+GB008,The Derma Co Kojic Acid Serum,The Derma Co,Pigmentation,All
+GB009,The Derma Co C-Cinamide Serum,The Derma Co,Dark Spots,All
+GB010,The Derma Co 1% Hyaluronic Sunscreen,The Derma Co,Daily Care,All
+GB011,Dot & Key Cica Face Wash,Dot & Key,Acne,Oily
+GB012,Dot & Key Vitamin C Serum,Dot & Key,Dark Spots,All
+GB013,Dot & Key Watermelon Moisturizer,Dot & Key,Oily Skin,Oily
+GB014,Dot & Key Ceramide Moisturizer,Dot & Key,Dry Skin,Dry
+GB015,Dot & Key Retinol Night Cream,Dot & Key,Pigmentation,All
+GB016,Plum Green Tea Toner,Plum,Acne,Oily
+GB017,Plum Green Tea Moisturizer,Plum,Acne,Oily
+GB018,Plum Vitamin C Serum,Plum,Dark Spots,All
+GB019,Plum Niacinamide Serum,Plum,Pigmentation,All
+GB020,Plum Retinol Serum,Plum,Pigmentation,All
+GB021,Foxtale Vitamin C Serum,Foxtale,Dark Spots,All
+GB022,Foxtale Daily Duet Cleanser,Foxtale,Acne,All
+GB023,Foxtale Hydrating Moisturizer,Foxtale,Dry Skin,Dry
+GB024,Foxtale AHA BHA Exfoliant,Foxtale,Pigmentation,All
+GB025,Foxtale Dewy Sunscreen,Foxtale,Daily Care,All
+GB026,Deconstruct Clearing Serum,Deconstruct,Acne,Oily
+GB027,Deconstruct Brightening Serum,Deconstruct,Dark Spots,All
+GB028,Deconstruct Niacinamide Serum,Deconstruct,Pigmentation,All
+GB029,Deconstruct Retinol Serum,Deconstruct,Pigmentation,All
+GB030,Deconstruct Gel Sunscreen,Deconstruct,Daily Care,All
+GB031,Dr Sheths Kesar Kojic Serum,Dr Sheth's,Pigmentation,All
+GB032,Dr Sheths Ceramide Sunscreen,Dr Sheth's,Daily Care,All
+GB033,Dr Sheths Neem Salicylic Face Wash,Dr Sheth's,Acne,Oily
+GB034,Dr Sheths Haldi Hyaluronic Cream,Dr Sheth's,Dry Skin,Dry
+GB035,Dr Sheths Vitamin C Serum,Dr Sheth's,Dark Spots,All
+GB036,Aqualogica Glow Serum,Aqualogica,Dark Spots,All
+GB037,Aqualogica Hydrate Gel,Aqualogica,Dry Skin,Dry
+GB038,Aqualogica Radiance Sunscreen,Aqualogica,Daily Care,All
+GB039,Aqualogica Clear Face Wash,Aqualogica,Acne,Oily
+GB040,Aqualogica Brightening Cream,Aqualogica,Pigmentation,All
+GB041,Pilgrim Vitamin C Serum,Pilgrim,Dark Spots,All
+GB042,Pilgrim Salicylic Acid Serum,Pilgrim,Acne,Oily
+GB043,Pilgrim Squalane Moisturizer,Pilgrim,Dry Skin,Dry
+GB044,Pilgrim Retinol Night Cream,Pilgrim,Pigmentation,All
+GB045,Pilgrim Eye Cream,Pilgrim,Dark Circles,All
+GB046,Reequil Oil Free Moisturizer,Re'equil,Oily Skin,Oily
+GB047,Reequil Ceramide Moisturizer,Re'equil,Dry Skin,Dry
+GB048,Reequil Sunscreen Ultra Matte,Re'equil,Daily Care,All
+GB049,Reequil AHA Face Wash,Re'equil,Acne,Oily
+GB050,Reequil Skin Radiance Cream,Re'equil,Dark Spots,All
+GB051,Cetaphil Gentle Cleanser,Cetaphil,Sensitive Skin,Sensitive
+GB052,Cetaphil Moisturizing Cream,Cetaphil,Dry Skin,Dry
+GB053,Cetaphil Bright Healthy Radiance Serum,Cetaphil,Pigmentation,All
+GB054,Cetaphil Sun SPF 50,Cetaphil,Daily Care,All
+GB055,Cetaphil Oily Skin Cleanser,Cetaphil,Acne,Oily
+GB056,Neutrogena Oil Free Acne Wash,Neutrogena,Acne,Oily
+GB057,Neutrogena Hydro Boost Gel,Neutrogena,Dry Skin,Dry
+GB058,Neutrogena Bright Boost Serum,Neutrogena,Dark Spots,All
+GB059,Neutrogena Rapid Tone Repair,Neutrogena,Pigmentation,All
+GB060,Neutrogena Ultra Sheer Sunscreen,Neutrogena,Daily Care,All
+GB061,Fixderma Salyzap Gel,Fixderma,Acne,Oily
+GB062,Fixderma Shadow SPF 50,Fixderma,Daily Care,All
+GB063,Fixderma Nigrifix Cream,Fixderma,Pigmentation,All
+GB064,Fixderma Eye Cream,Fixderma,Dark Circles,All
+GB065,Fixderma Moisturizing Lotion,Fixderma,Dry Skin,Dry
+GB066,Sebamed Clear Face Gel,Sebamed,Acne,Oily
+GB067,Sebamed Clear Face Care Gel,Sebamed,Oily Skin,Oily
+GB068,Sebamed Moisturizing Cream,Sebamed,Dry Skin,Dry
+GB069,Sebamed Anti Pigmentation Serum,Sebamed,Pigmentation,All
+GB070,Sebamed Sun Care SPF 50,Sebamed,Daily Care,All
+GB071,Simple Refreshing Face Wash,Simple,Sensitive Skin,Sensitive
+GB072,Simple Hydrating Light Moisturizer,Simple,Dry Skin,Dry
+GB073,Simple Vitamin C Serum,Simple,Dark Spots,All
+GB074,Simple Booster Serum,Simple,Pigmentation,All
+GB075,Simple Eye Balm,Simple,Dark Circles,All
+GB076,Bioderma Sebium Gel,Bioderma,Acne,Oily
+GB077,Bioderma Pigmentbio Serum,Bioderma,Pigmentation,All
+GB078,Bioderma Atoderm Cream,Bioderma,Dry Skin,Dry
+GB079,Bioderma Sensibio Gel,Bioderma,Sensitive Skin,Sensitive
+GB080,Bioderma Photoderm SPF 50,Bioderma,Daily Care,All
+GB081,Mamaearth Tea Tree Face Wash,Mamaearth,Acne,Oily
+GB082,Mamaearth Vitamin C Serum,Mamaearth,Dark Spots,All
+GB083,Mamaearth Bye Bye Blemishes Cream,Mamaearth,Pigmentation,All
+GB084,Mamaearth Under Eye Cream,Mamaearth,Dark Circles,All
+GB085,Mamaearth Aqua Glow Gel,Mamaearth,Dry Skin,Dry
+GB086,WOW Vitamin C Face Wash,WOW,Dark Spots,All
+GB087,WOW Tea Tree Serum,WOW,Acne,Oily
+GB088,WOW Aloe Vera Gel,WOW,Dry Skin,Dry
+GB089,WOW Under Eye Cream,WOW,Dark Circles,All
+GB090,WOW Sunscreen SPF 55,WOW,Daily Care,All
+GB091,Conscious Chemist Pigmentation Corrector,Conscious Chemist,Pigmentation,All
+GB092,Conscious Chemist Salicylic Serum,Conscious Chemist,Acne,Oily
+GB093,Conscious Chemist Eye Cream,Conscious Chemist,Dark Circles,All
+GB094,Conscious Chemist Berry Bright Cream,Conscious Chemist,Dark Spots,All
+GB095,Conscious Chemist Sunscreen,Conscious Chemist,Daily Care,All

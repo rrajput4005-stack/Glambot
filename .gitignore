@@ -1,0 +1,20 @@
+﻿.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Training datasets stay local; deployment only needs the saved models.
+Dataset_acne.zip
+skin tone.v1i.folder.zip
+backend/data/skin_tone/
+
+# Local notebooks and duplicate model exports.
+*.ipynb
+acne_cnn_model.keras
+acne_classes.json
+glambot_100_product_starter_dataset.csv
+
+.env
+.DS_Store
+Thumbs.db
+
