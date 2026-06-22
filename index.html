@@ -25,18 +25,20 @@
         <section class="hero" id="scanner">
           <div class="hero-copy">
             <p class="eyebrow">AI-powered affordable beauty advisor</p>
-            <h1>Beauty That Fits Your Skin and Your Budget</h1>
+            <h1>
+              <span>Discover Your Skin.</span>
+              <span>Reveal Your Natural Glow.</span>
+              <span>Powered by AI.</span>
+            </h1>
             <p class="hero-text">
-              Scan or upload a face image to receive a skin concern report,
-              budget-friendly product picks, home remedies, and daily routines.
+              Scan or upload a face image to receive a real CNN-backed acne report,
+              skin-tone confidence, budget-friendly product picks, and daily routines.
             </p>
             <div class="hero-actions">
               <button class="primary-btn" id="startCameraBtn" type="button">
-                <span aria-hidden="true">â—‰</span>
                 Start Analysis
               </button>
               <a class="secondary-btn" href="#recommendations">
-                <span aria-hidden="true">â–¡</span>
                 Explore Products
               </a>
             </div>
@@ -68,12 +70,10 @@
             </div>
             <div class="scanner-controls">
               <label class="file-btn" for="imageUpload">
-                <span aria-hidden="true">â†‘</span>
                 Upload Image
               </label>
               <input id="imageUpload" type="file" accept="image/*" />
               <button class="ghost-btn" id="captureBtn" type="button">
-                <span aria-hidden="true">â—Ž</span>
                 Capture
               </button>
             </div>
@@ -85,8 +85,8 @@
             <p class="eyebrow">Skin report dashboard</p>
             <h2>Personalized analysis summary</h2>
             <p class="section-copy">
-              GLAMBOT estimates visible skin tone, concern levels, and skin type,
-              then maps each issue to affordable skincare actions.
+              CNN confidence is shown for trained acne and skin-tone predictions.
+              Other visible concerns are clearly marked as rule-based estimates.
             </p>
           </div>
           <div class="report-grid" id="reportGrid" aria-live="polite"></div>

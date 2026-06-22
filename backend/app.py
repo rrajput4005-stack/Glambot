@@ -191,20 +191,50 @@ def product_swap(brand: str, condition: str) -> str:
 
 
 def build_report(acne: dict[str, Any], skin_tone: dict[str, Any], skin_type: dict[str, Any]) -> list[dict[str, Any]]:
-    pigmentation_score = 55 if acne["level"] in {"Moderate", "Severe"} else 34
-    dark_circle_score = 38
-    tanning_score = 42 if skin_tone["value"] in {"Medium Brown", "Deep", "Brown", "Black"} else 28
+    pigmentation_value = "Possible" if acne["level"] in {"Moderate", "Severe"} else "Low"
+    tanning_value = "Possible" if skin_tone["value"] in {"Medium Brown", "Deep", "Brown", "Black"} else "Low"
+    skin_tone_result: dict[str, Any] = {
+        "label": "Skin Tone",
+        "value": skin_tone["value"],
+        "evidence": "CNN confidence" if skin_tone.get("method") == "cnn" else "Color-based estimate",
+    }
+    if skin_tone.get("method") == "cnn":
+        skin_tone_result["percentage"] = skin_tone["score"]
 
     return [
-        {"label": "Skin Tone", "value": skin_tone["value"], "score": skin_tone["score"]},
-        {"label": "Acne Type", "value": acne["type"], "score": acne["score"]},
-        {"label": "Acne Level", "value": acne["level"], "score": max(acne["score"], 40)},
-        {"label": "Skin Type", "value": skin_type["value"], "score": skin_type["score"]},
-        {"label": "Pigmentation", "value": "Possible" if pigmentation_score > 45 else "Low", "score": pigmentation_score},
-        {"label": "Dark Circles", "value": "Manual check advised", "score": dark_circle_score},
-        {"label": "Tanning", "value": "Possible" if tanning_score > 40 else "Low", "score": tanning_score},
+        skin_tone_result,
+        {
+            "label": "Acne Type",
+            "value": acne["type"],
+            "percentage": acne["score"],
+            "evidence": "CNN confidence",
+        },
+        {
+            "label": "Acne Level",
+            "value": acne["level"],
+            "evidence": "Derived from acne class",
+        },
+        {
+            "label": "Skin Type",
+            "value": skin_type["value"],
+            "evidence": "Rule-based estimate",
+        },
+        {
+            "label": "Pigmentation",
+            "value": pigmentation_value,
+            "evidence": "Rule-based estimate",
+        },
+        {
+            "label": "Dark Circles",
+            "value": "Manual check advised",
+            "evidence": "No trained CNN yet",
+        },
+        {
+            "label": "Tanning",
+            "value": tanning_value,
+            "evidence": "Rule-based estimate",
+        },
     ]
-
 
 def build_routine(acne: dict[str, Any], skin_type: str) -> dict[str, list[str]]:
     morning = [
