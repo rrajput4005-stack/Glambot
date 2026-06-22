@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import csv
 import json
@@ -32,11 +32,8 @@ with ACNE_CLASSES_PATH.open("r", encoding="utf-8") as file:
 
 skin_tone_model = None
 skin_tone_classes: list[str] = []
-if SKIN_TONE_MODEL_PATH.exists() and SKIN_TONE_CLASSES_PATH.exists():
-    skin_tone_model = tf.keras.models.load_model(SKIN_TONE_MODEL_PATH)
-    with SKIN_TONE_CLASSES_PATH.open("r", encoding="utf-8") as file:
-        skin_tone_classes = json.load(file)
-
+# Skin-tone CNN is disabled for demos because the current dataset is not reliable enough.
+# GLAMBOT now shows fixed visible-skin values and uses CNN only for acne.
 
 def load_products() -> list[dict[str, str]]:
     with PRODUCTS_PATH.open("r", encoding="utf-8-sig", newline="") as file:
@@ -83,60 +80,14 @@ def predict_acne(image: Image.Image) -> dict[str, Any]:
     }
 
 
-def estimate_skin_tone_by_color(image: Image.Image) -> dict[str, Any]:
-    # A lightweight fallback for skin-tone estimation when no trained skin-tone CNN is saved yet.
-    small = np.asarray(image.resize((180, 180)), dtype=np.uint8)
-    hsv = cv2.cvtColor(small, cv2.COLOR_RGB2HSV)
-    ycrcb = cv2.cvtColor(small, cv2.COLOR_RGB2YCrCb)
-
-    lower_hsv = np.array([0, 15, 40], dtype=np.uint8)
-    upper_hsv = np.array([35, 190, 255], dtype=np.uint8)
-    mask_hsv = cv2.inRange(hsv, lower_hsv, upper_hsv)
-
-    lower_ycrcb = np.array([35, 133, 77], dtype=np.uint8)
-    upper_ycrcb = np.array([255, 173, 127], dtype=np.uint8)
-    mask_ycrcb = cv2.inRange(ycrcb, lower_ycrcb, upper_ycrcb)
-    mask = cv2.bitwise_and(mask_hsv, mask_ycrcb)
-
-    pixels = small[mask > 0]
-    if len(pixels) < 80:
-        pixels = small.reshape(-1, 3)
-
-    brightness = float(np.mean(0.299 * pixels[:, 0] + 0.587 * pixels[:, 1] + 0.114 * pixels[:, 2]))
-    if brightness < 95:
-        tone = "Deep"
-        score = 76
-    elif brightness < 145:
-        tone = "Medium Brown"
-        score = 82
-    else:
-        tone = "Fair / Light"
-        score = 84
-
-    return {"value": tone, "score": score, "method": "color-estimation"}
-
-
-def predict_skin_tone(image: Image.Image) -> dict[str, Any]:
-    if skin_tone_model is None:
-        return estimate_skin_tone_by_color(image)
-
-    probabilities = skin_tone_model.predict(prepare_for_cnn(image), verbose=0)[0]
-    index = int(np.argmax(probabilities))
+def fixed_skin_profile() -> dict[str, Any]:
     return {
-        "value": skin_tone_classes[index],
-        "score": int(round(float(probabilities[index]) * 100)),
-        "confidence": round(float(probabilities[index]), 4),
-        "method": "cnn",
+        "skin_tone": {"value": "Natural", "method": "fixed"},
+        "skin_type": {"value": "Oily", "method": "fixed"},
+        "pigmentation": "Low",
+        "dark_circles": "Mild",
+        "tanning": "Low",
     }
-
-
-def infer_skin_type(acne: dict[str, Any]) -> dict[str, Any]:
-    if acne["type"] in {"Blackheads", "Whiteheads", "Papules", "Pustules"}:
-        return {"value": "Oily", "score": 72}
-    if acne["type"] == "Cyst":
-        return {"value": "Sensitive", "score": 68}
-    return {"value": "All", "score": 58}
-
 
 def select_products(acne: dict[str, Any], skin_type: str) -> list[dict[str, Any]]:
     concern_priority = ["Acne", "Acne Marks", "Daily Care"]
@@ -190,19 +141,13 @@ def product_swap(brand: str, condition: str) -> str:
     return f"Affordable {brand} option for {condition.lower()} care."
 
 
-def build_report(acne: dict[str, Any], skin_tone: dict[str, Any], skin_type: dict[str, Any]) -> list[dict[str, Any]]:
-    pigmentation_value = "Possible" if acne["level"] in {"Moderate", "Severe"} else "Low"
-    tanning_value = "Possible" if skin_tone["value"] in {"Medium Brown", "Deep", "Brown", "Black"} else "Low"
-    skin_tone_result: dict[str, Any] = {
-        "label": "Skin Tone",
-        "value": skin_tone["value"],
-        "evidence": "CNN confidence" if skin_tone.get("method") == "cnn" else "Color-based estimate",
-    }
-    if skin_tone.get("method") == "cnn":
-        skin_tone_result["percentage"] = skin_tone["score"]
-
+def build_report(acne: dict[str, Any], skin_profile: dict[str, Any]) -> list[dict[str, Any]]:
     return [
-        skin_tone_result,
+        {
+            "label": "Skin Tone",
+            "value": skin_profile["skin_tone"]["value"],
+            "evidence": "Fixed demo value",
+        },
         {
             "label": "Acne Type",
             "value": acne["type"],
@@ -212,27 +157,27 @@ def build_report(acne: dict[str, Any], skin_tone: dict[str, Any], skin_type: dic
         {
             "label": "Acne Level",
             "value": acne["level"],
-            "evidence": "Derived from acne class",
+            "evidence": "Derived from acne CNN class",
         },
         {
             "label": "Skin Type",
-            "value": skin_type["value"],
-            "evidence": "Rule-based estimate",
+            "value": skin_profile["skin_type"]["value"],
+            "evidence": "Fixed demo value",
         },
         {
             "label": "Pigmentation",
-            "value": pigmentation_value,
-            "evidence": "Rule-based estimate",
+            "value": skin_profile["pigmentation"],
+            "evidence": "Fixed demo value",
         },
         {
             "label": "Dark Circles",
-            "value": "Manual check advised",
-            "evidence": "No trained CNN yet",
+            "value": skin_profile["dark_circles"],
+            "evidence": "Fixed demo value",
         },
         {
             "label": "Tanning",
-            "value": tanning_value,
-            "evidence": "Rule-based estimate",
+            "value": skin_profile["tanning"],
+            "evidence": "Fixed demo value",
         },
     ]
 
@@ -277,7 +222,7 @@ def health() -> Any:
     return jsonify({
         "status": "ok",
         "acneModel": ACNE_MODEL_PATH.exists(),
-        "skinToneModel": skin_tone_model is not None,
+        "skinToneModel": "disabled",
         "products": len(PRODUCTS),
     })
 
@@ -287,23 +232,21 @@ def analyze() -> Any:
     try:
         image = image_from_upload()
         acne = predict_acne(image)
-        skin_tone = predict_skin_tone(image)
-        skin_type = infer_skin_type(acne)
-        products = select_products(acne, skin_type["value"])
-        routine = build_routine(acne, skin_type["value"])
-        report = build_report(acne, skin_tone, skin_type)
+        skin_profile = fixed_skin_profile()
+        products = select_products(acne, skin_profile["skin_type"]["value"])
+        routine = build_routine(acne, skin_profile["skin_type"]["value"])
+        report = build_report(acne, skin_profile)
 
         return jsonify({
             "analysis": report,
             "acne": acne,
-            "skinTone": skin_tone,
-            "skinType": skin_type,
+            "skinTone": skin_profile["skin_tone"],
+            "skinType": skin_profile["skin_type"],
             "products": products,
             "routine": routine,
         })
     except Exception as exc:  # Keep API errors readable for project demos.
         return jsonify({"error": str(exc)}), 400
-
 
 if __name__ == "__main__":
     app.run(
@@ -311,3 +254,5 @@ if __name__ == "__main__":
         host="0.0.0.0",
         port=int(os.environ.get("PORT", "5000")),
     )
+
+

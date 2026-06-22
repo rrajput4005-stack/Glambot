@@ -2,13 +2,13 @@
 const API_URL = `${API_BASE_URL}/api/analyze`;
 
 let analysis = [
-  { label: "Skin Tone", value: "Upload image", evidence: "Awaiting CNN analysis" },
+  { label: "Skin Tone", value: "Natural", evidence: "Fixed demo value" },
   { label: "Acne Type", value: "Waiting", evidence: "Awaiting CNN analysis" },
   { label: "Acne Level", value: "Waiting", evidence: "Derived after analysis" },
-  { label: "Skin Type", value: "Waiting", evidence: "Rule-based estimate" },
-  { label: "Pigmentation", value: "Waiting", evidence: "Rule-based estimate" },
-  { label: "Dark Circles", value: "Waiting", evidence: "Manual check advised" },
-  { label: "Tanning", value: "Waiting", evidence: "Rule-based estimate" }
+  { label: "Skin Type", value: "Oily", evidence: "Fixed demo value" },
+  { label: "Pigmentation", value: "Low", evidence: "Fixed demo value" },
+  { label: "Dark Circles", value: "Mild", evidence: "Fixed demo value" },
+  { label: "Tanning", value: "Low", evidence: "Fixed demo value" }
 ];
 
 let products = [
@@ -49,7 +49,7 @@ const scanMessages = [
   "Preparing your image...",
   "Detecting face landmarks...",
   "Running acne CNN model...",
-  "Checking skin tone confidence...",
+  "Keeping skin profile values fixed...",
   "Matching budget-friendly products..."
 ];
 
@@ -264,6 +264,7 @@ captureBtn.addEventListener("click", async () => {
 });
 
 renderAll();
+
 
 
 
