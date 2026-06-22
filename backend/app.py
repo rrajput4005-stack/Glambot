@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import csv
 import json
@@ -233,6 +233,15 @@ def build_routine(acne: dict[str, Any], skin_type: str) -> dict[str, list[str]]:
     return {"morning": morning, "night": night, "remedies": remedies}
 
 
+@app.get("/")
+def root() -> Any:
+    return jsonify({
+        "name": "GLAMBOT API",
+        "status": "running",
+        "health": "/api/health",
+    })
+
+
 @app.get("/api/health")
 def health() -> Any:
     return jsonify({
@@ -272,5 +281,3 @@ if __name__ == "__main__":
         host="0.0.0.0",
         port=int(os.environ.get("PORT", "5000")),
     )
-
-
